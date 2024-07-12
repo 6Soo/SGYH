@@ -9,6 +9,35 @@
             font-family: Arial, sans-serif;
             padding: 10px;
         }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .tab:hover {
+            background-color: #45a049;
+        }
+        .add-tab-button {
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .add-tab-button:hover {
+            background-color: #0b7dda;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -62,6 +91,8 @@
                     if (event.target.textContent.trim() === "") {
                         event.target.textContent = event.target.dataset.default;
                         event.target.style.color = "gray";
+                    } else {
+                        localStorage.setItem(event.target.id, event.target.textContent.trim());
                     }
                 });
 
@@ -83,8 +114,17 @@
                     if (event.target.textContent.trim() === "") {
                         event.target.textContent = event.target.dataset.original;
                         event.target.style.color = "gray";
+                    } else {
+                        localStorage.setItem(event.target.id, event.target.textContent.trim());
                     }
                 });
+
+                // Load stored content if available
+                const storedContent = localStorage.getItem(element.id);
+                if (storedContent) {
+                    element.textContent = storedContent;
+                    element.style.color = "black";
+                }
             }
 
             const cells = document.querySelectorAll("td[contenteditable='true']");
@@ -98,37 +138,17 @@
                 const clone = table.cloneNode(true);
                 document.body.insertBefore(clone, table.nextSibling);
             });
+
+            document.getElementById('addTab').addEventListener('click', function() {
+                const tabName = title.textContent.trim() || title.dataset.default;
+                const tabButton = document.createElement("button");
+                tabButton.textContent = tabName;
+                tabButton.className = "tab";
+                tabButton.addEventListener('click', function() {
+                    window.open('', '_blank');
+                });
+                document.querySelector('.tabs').appendChild(tabButton);
+            });
         });
     </script>
-</head>
-<body>
-    <h1 id="title" contenteditable="true" data-default="여행">여행</h1>
-    <table>
-        <tr>
-            <th>이름</th>
-            <th>항공편</th>
-            <th>항공료</th>
-            <th>호텔</th>
-            <th>숙박료</th>
-            <th>비용</th>
-        </tr>
-        <tr>
-            <td contenteditable="true" data-default="이름" rowspan="2">이름</td>
-            <td contenteditable="true" data-default="항공편">항공편</td>
-            <td contenteditable="true" data-default="항공료">항공료</td>
-            <td contenteditable="true" data-default="호텔">호텔</td>
-            <td contenteditable="true" data-default="숙박료">숙박료</td>
-            <td contenteditable="true" data-default="비용">비용</td>
-        </tr>
-        <tr>
-            <td contenteditable="true" data-default="항공편">항공편</td>
-            <td contenteditable="true" data-default="항공료">항공료</td>
-            <td contenteditable="true" data-default="호텔">호텔</td>
-            <td contenteditable="true" data-default="숙박료">숙박료</td>
-            <td contenteditable="true" data-default="비용">비용</td>
-        </tr>
-    </table>
-    <button id="addRow" class="add-button">+ 추가</button>
-</body>
-</html>
-
+</head
